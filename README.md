@@ -4,10 +4,13 @@
 |:---:|:--:|:--------:|:--------:|:-----------:|
 ![image](https://user-images.githubusercontent.com/17517057/183308879-be6a6966-5679-4858-a9c2-ef5d70e840b2.png)|![image](https://user-images.githubusercontent.com/17517057/183308892-50b1b963-1bcd-4247-b002-a3cf8b5e19c7.png)|![image](https://user-images.githubusercontent.com/17517057/183308900-06015750-aa11-4abd-be43-c2749aee1b3a.png)|![image](https://user-images.githubusercontent.com/17517057/183308903-aada7919-3df9-4211-9bab-494f4b3ecee9.png)|![image](https://user-images.githubusercontent.com/17517057/183308914-dd362211-f841-408d-87cd-8f1980160ac7.png)
 
-
-
-
 Basic project that shows a demo of a a Remix (<https://remix.run>) app
+
+To run:
+1. `npm i`
+2. `npx prisma db push`
+3. `node prisma/seed.js`
+4. `npm run dev`
 
 Remix has SSR just out of the box!
 
