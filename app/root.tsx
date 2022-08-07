@@ -1,11 +1,19 @@
-import type { ErrorBoundaryComponent } from '@remix-run/node';
-import { Outlet, LiveReload, Link, Links, Meta } from '@remix-run/react';
+import type { ErrorBoundaryComponent, LoaderFunction } from '@remix-run/node';
+import { Outlet, LiveReload, Link, Links, Meta, useLoaderData } from '@remix-run/react';
 import globalStylesUrl from '~/styles/global.css';
+
+import { getUser } from './utils/session.server';
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await getUser(request);
+
+  return { user };
+};
 // here is where we should put hour full html structure
 // live reload need to be imported as a component too
 export default function App() {
   return (
-    <Document title="temp">
+    <Document>
       <Layout>
         <Outlet />
       </Layout>
@@ -13,13 +21,13 @@ export default function App() {
   );
 }
 
-const Document: React.FC<{ title: string }> = ({ children, title }) => {
+const Document: React.FC<{ title?: string }> = ({ children, title }) => {
   return (
     <html lang="en">
       <head>
         <Links />
         <Meta />
-        <title> {title ? title : 'My remix demo blog'}</title>
+        <title>{title ? title : 'My Remix Demo Blog'}</title>
       </head>
       <body>
         {children}
@@ -30,6 +38,8 @@ const Document: React.FC<{ title: string }> = ({ children, title }) => {
 };
 
 const Layout: React.FC = ({ children }) => {
+  const { user } = useLoaderData();
+
   return (
     <>
       <nav className="navbar">
@@ -39,6 +49,17 @@ const Layout: React.FC = ({ children }) => {
         <ul className="nav">
           <li>
             <Link to="/posts">Posts</Link>
+          </li>
+          <li>
+            {user ? (
+              <form action="/auth/logout" method="POST">
+                <button className="btn" type="submit">
+                  Logout {user.username}
+                </button>
+              </form>
+            ) : (
+              <Link to="/auth/login">Login</Link>
+            )}
           </li>
         </ul>
       </nav>

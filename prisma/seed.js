@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const db = new PrismaClient();
+const prisma = new PrismaClient();
 
 function getPosts() {
   return [
@@ -27,10 +27,20 @@ function getPosts() {
  * getPosts() return a list of objects with title and body
  */
 async function seed() {
+  const mockJohn = await prisma.user.create({
+    data: {
+      username: 'john',
+      // password decrypted = twixrox
+      passwordHash: '$2b$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u'
+    }
+  });
+
   await Promise.all(
     getPosts().map(post => {
-      // db.post because our table name is post.
-      return db.post.create({ data: post });
+      // adding john as the owner of this posts
+      const data = { userId: mockJohn.id, ...post };
+      // prisma.post because our table name is post.
+      return prisma.post.create({ data });
     })
   );
 }

@@ -7,7 +7,7 @@ import { Outlet } from '@remix-run/react';
 function Posts() {
   return (
     <div>
-      <p>=======</p>
+      <p className="no-margin-top">=======</p>
       <Outlet />
     </div>
   );
